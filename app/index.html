@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8" />
+	<title>Phōs - Image Manager</title>
+	<link rel="stylesheet" href="./css/index.css" />
+	<script type="text/javascript" src="./libs/jquery-3.6.0.min.js"></script>
+</head>
+
+<body style="text-align: center;">
+	<div class="splash">
+		<div>
+			<h1>Phōs</h1>
+			<p>Image Manager</p>
+			<!--<img src="./logo.png" width="80" style="opacity: 0.7; margin: 10px;">-->
+			<img src="./logo2.png" width="100" style="opacity: 0.8; margin: 5px;">
+			<p style="font-size: 0.8em;">Ver 0.0.1</p>
+
+			<button id="openAlbum" type="button">Open an Album</button><br>
+			<button id="newAlbum" type="button">Start a New Album</button><br>
+			<p style="margin-top: 5px;"><a href="#">About Phōs</a></p>
+		</div>
+	</div>	
+	<div class="loading" hidden>
+		<div>
+			<h3>Please Wait...</h3>
+			<img src="./loadingTransparent.gif" width="100" style="opacity: 0.8; margin: 10px;">
+			<p style="font-size: 0.8em;">Phōs is indexing your album. This may take a moment.</p>
+		</div>
+	</div>
+	<div class="gallery" hidden>
+
+	</div>
+</body>
+
+<script type="text/javascript" src="./splash.js"></script>
+
+</html>
