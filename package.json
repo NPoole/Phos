@@ -18,7 +18,7 @@
     "win": "electron-builder --windows"
   },
   "dependencies": {
-    "electron-reloader": "^1.2.1",
+    "electron-reloader": "^1.2.3",
     "imghash": "^0.0.9",
     "leven": "^4.0.0"
   },
