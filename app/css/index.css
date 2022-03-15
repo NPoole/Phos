@@ -248,6 +248,7 @@ body {
 	scroll-behavior: smooth;
 	background-color: rgb(14, 14, 14);
 	color: var(--gray);
+	overflow: hidden;
 }
 
 a {
@@ -322,6 +323,59 @@ textarea:invalid {
 	align-items: center;
 	justify-content: center;
 }
+
+.gallery {
+	height: inherit;
+	width: inherit;
+}
+
+#menuBar {
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	width: 100%;
+	height: 60px;
+}
+
+#sideBar {
+	position: absolute;
+	display: flex;
+	flex-direction: column;
+	left: 0px;
+	top: 60px;
+	width: 300px;
+	height: calc(100% - 60px);
+}
+
+#searchBar {
+	width: 100%;
+	height: 40px;
+}
+
+#tagList {
+	width: 100%;
+	height: 500px;
+}
+
+#album {
+	position: absolute;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;	
+	align-content: flex-start;
+	top: 60px;
+	right: 0px;
+	width: calc(100% - 300px);
+	overflow-y: scroll;
+	height: calc(100% - 60px);
+}
+
+.thumbnail {
+	margin: 10px;
+	align-self: baseline;
+}
+
+
 /* Loader */
 
 #loader {

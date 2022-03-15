@@ -43,7 +43,7 @@ const createMainWindow = async () => {
 
   // Optional:
 
-  win.removeMenu(); // Remove menu.
+  // win.removeMenu(); // Remove menu.
   // win.webContents.openDevTools(); // Open DevTools.
 
   await win.loadFile(path.join(__dirname, 'app/index.html'));
@@ -80,14 +80,14 @@ app.on('activate', async () => {
   mainWindow = await createMainWindow();
 })();
 
-/***********************************
+/**************************************************
  * Create a New Album
- ***********************************/
+ **************************************************/
 
-ipcMain.on('newAlbum', function() {
+ipcMain.on('newAlbum', async function() {
 
   // Show Folder select dialog
-  let albumTopDirectory = dialog.showOpenDialogSync({ properties: ['openDirectory'] });
+  let albumTopDirectory = dialog.showOpenDialogSync({ properties: ['openDirectory'] })[0];
 
   // Start load screen
   mainWindow.webContents.send("loadingScreen");
@@ -111,9 +111,12 @@ ipcMain.on('newAlbum', function() {
   });
 
   // Hash images
-  albumTable.forEach(function (entry) {
+  for (let index = 0; index < albumTable.length; index++)
+  {
+    let entry = albumTable[index];
     // hash this image
-    let thisHash = imghash.hash(entry.filename, 16);
+    let thisHash = await imghash.hash(entry.filename, 16);
+    console.log(thisHash);
     // retrieve the current hashList
     let hashTable = albumTable.map(({ hash }) => hash);
     // check the hashlist to see if this image is identical to another in the album
@@ -122,33 +125,59 @@ ipcMain.on('newAlbum', function() {
     }else{
       entry.hash = thisHash;
     }
-  });
+  }
 
   // Create phos.json
   // Serialize the albumTable object with human readable formatting
   let tableData = JSON.stringify(albumTable, null, 2);
+
   // Create phos.json and write JSON
-  fs.writeFileSync('phos.json', tableData);
+  fs.writeFileSync(albumTopDirectory + '\\phos.json', tableData);
 
   // Open Gallery View
   launchAlbum(albumTopDirectory);
 
 });
 
-/***********************************
+/**************************************************
  * Load an Album Table and Open the Gallery View
- ***********************************/
+ **************************************************/
 
 function launchAlbum(albumTablePath) 
 {
 
-  // Get find the phos.json file and load it
-  // + '\\phos.json'
+  mainWindow.webContents.send("galleryView");
+
+  let albumTable;
+
+  // Find the phos.json file and load it
+  try {
+    albumTable = JSON.parse(fs.readFileSync(albumTablePath + '\\phos.json'));
+  } catch (err) {
+    /**************** TODO: No Album Table Found, Ask the user if they want to start one ***********************/
+  }
+
+  if (albumTable[0].hasOwnProperty("filename")) 
+  {
+
+    albumTable.forEach(function (entry) {
+
+      mainWindow.webContents.send("image", entry.filename);
+
+    });
+
+  }else{
+    /**************** TODO: Album Table is Empty ***********************/
+  }
 
 }
 
 ipcMain.on('resizeWindow', function(event, args) {
   mainWindow.setSize(args[0], args[1]);
+});
+
+ipcMain.on('maximizeWindow', function(event) {
+  mainWindow.maximize();
 });
 
 // s/o Smally 

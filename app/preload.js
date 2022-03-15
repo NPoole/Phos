@@ -10,13 +10,13 @@ contextBridge.exposeInMainWorld(
     "api", {
         send: (channel, data) => {
             // whitelist channels
-            let validChannels = ["newAlbum", "resizeWindow"];
+            let validChannels = ["newAlbum", "resizeWindow", "maximizeWindow"];
             if (validChannels.includes(channel)) {
                 ipcRenderer.send(channel, data);
             }
         },
         receive: (channel, func) => {
-            let validChannels = ["loadingScreen"];
+            let validChannels = ["loadingScreen", "galleryView", "tag", "properties", "image"];
             if (validChannels.includes(channel)) {
                 // Deliberately strip event as it includes `sender` 
                 ipcRenderer.on(channel, (event, ...args) => func(...args));
